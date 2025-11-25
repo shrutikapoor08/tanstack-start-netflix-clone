@@ -3,7 +3,7 @@ import Header from "./Header";
 
 const Hero = () => {
     return (
-        <div className="relative min-h-screen flex flex-col overflow-hidden w-full bg-linear-to-br from-black via-gray-900 to-black">
+        <div className="relative min-h-[75vh] flex flex-col overflow-hidden w-full bg-linear-to-br from-black via-gray-900 to-black">
             {/* Background Image */}
             <img
                 src={heroBg}
@@ -13,7 +13,7 @@ const Hero = () => {
             />
 
             {/* Dark Overlay */}
-            <div aria-hidden="true" className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black pointer-events-none" />
+            <div aria-hidden="true" className="absolute inset-0 bg-linear-to-b from-black/85 via-black/50 to-black pointer-events-none" />
 
             <Header />
 
