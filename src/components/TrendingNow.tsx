@@ -1,8 +1,16 @@
-const TrendingNow = () => {
+
+import MovieList from "./MovieList";
+import type { Movie } from '../types'
+
+const TrendingNow = ({ movies }: { movies: Movie[] }) => {
     return (
-        <section className="my-8">
-            <h2 className="text-2xl font-bold mb-4">Trending Now</h2>
-        </section>
+        <div className="py-8">
+            <h3 className="font-medium lg:text-2xl sm:text-xl px-4">Trending Now</h3>
+
+            <div className="my-4">
+                <MovieList movies={movies} />
+            </div>
+        </div>
     );
 };
 

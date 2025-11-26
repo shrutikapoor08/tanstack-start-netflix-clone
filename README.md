@@ -1,4 +1,15 @@
-Welcome to your new TanStack app! 
+# Reactflix
+
+A Netflix-inspired streaming interface built with TanStack Start, showcasing modern React development practices.
+
+![Reactflix Screenshot](src/assets/demo/step-1.png)
+
+## Features
+
+- **Trending Now**: Browse trending movies with a sleek, responsive grid layout
+- **Movie Cards**: Interactive movie cards with hover effects and detailed information
+- **Modern UI**: Built with Tailwind CSS and shadcn/ui components
+- **Type-Safe**: Full TypeScript support throughout the application
 
 # Getting Started
 
