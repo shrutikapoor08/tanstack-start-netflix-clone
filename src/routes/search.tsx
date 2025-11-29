@@ -1,16 +1,34 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 import MovieCard from '../components/MovieCard'
 import Header from '../components/Header'
 import { Movie } from '../types'
+import { z } from 'zod';
+const QuerySchema = z.object({
+    query: z.string().min(1)
+});
 
-async function searchMoviesAPI(query: string) {
+const searchMoviesAPI = createServerFn()
+.inputValidator(QuerySchema )
+.handler(async ({data}) => {
+console.log('searchMoviesAPI called with data:', data);
+
+if(!data || !data.query || data.query.trim() === '') {
+    console.log('Empty query, returning empty results');
+    return [];
+}
+if(!process.env.TMDB_AUTH_TOKEN) {
+    throw new Error('TMDB_AUTH_TOKEN is not defined in environment variables');
+}
+    const { query } = data;
     if (!query || query.trim() === '') {
         return [];
     }
 
     const searchQuery = query?.trim().toLowerCase();
 
-    console.log('Searching for movies with query:', searchQuery);
+    // console.log('Searching for movies with query:', searchQuery);
+    console.log('Using TMDB_AUTH_TOKEN:', process.env.TMDB_AUTH_TOKEN)
     const res = await fetch(
         `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${encodeURIComponent(searchQuery)}`,
         {
@@ -20,15 +38,15 @@ async function searchMoviesAPI(query: string) {
             }
         }
     );
-    const data = await res.json();
-    console.log('Search results:', data);
-    return data.results || [];
-}
+    const searchResults = await res.json();
+    console.log('Search results:', searchResults);
+    return searchResults.results || [];
+})
 
 export const Route = createFileRoute('/search')({
     validateSearch: (search: Record<string, unknown>): { movie?: string } => {
         return {
-            movie: typeof search.movie === 'string' ? search.movie : undefined
+            movie: typeof search.movie === 'string' ? search.movie : ''
         };
     },
     loaderDeps: ({ search: { movie } }) => ({ movie }),
@@ -36,7 +54,7 @@ export const Route = createFileRoute('/search')({
         if (!movie) {
             return { results: [], searchQuery: '' };
         }
-        const results = await searchMoviesAPI(movie);
+        const results = await searchMoviesAPI({ data: { query: movie } });
         return { results, searchQuery: movie };
     },
     component: SearchComponent,

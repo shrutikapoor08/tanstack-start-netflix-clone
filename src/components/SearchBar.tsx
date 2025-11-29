@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from '@tanstack/react-router';
 
 export default function SearchBar() {
@@ -7,15 +7,23 @@ export default function SearchBar() {
     const [searchValue, setSearchValue] = useState("");
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            if (searchValue.trim() && searchValue.trim().length > 0) {
+                navigate({ to: '/search', search: { movie: searchValue } });
+            }
+        }, 500);
+
+        return () => {
+            clearTimeout(debounceTimer);
+        };
+    }, [searchValue, navigate]);
+
     const handleSearchQueryChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const query = event.target.value;
         setSearchValue(query);
-
-        if (query.trim()) {
-            navigate({ to: '/search', search: { movie: query } });
-        }
     };
 
     const handleBlur = () => {
