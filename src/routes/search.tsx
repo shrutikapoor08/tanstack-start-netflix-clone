@@ -28,7 +28,7 @@ if(!process.env.TMDB_AUTH_TOKEN) {
     const searchQuery = query?.trim().toLowerCase();
 
     // console.log('Searching for movies with query:', searchQuery);
-    console.log('Using TMDB_AUTH_TOKEN:', process.env.TMDB_AUTH_TOKEN)
+
     const res = await fetch(
         `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=${encodeURIComponent(searchQuery)}`,
         {
@@ -38,8 +38,11 @@ if(!process.env.TMDB_AUTH_TOKEN) {
             }
         }
     );
+    if (!res.ok) {
+        console.error('TMDB API error:', res.status, res.statusText);
+        return [];
+    }
     const searchResults = await res.json();
-    console.log('Search results:', searchResults);
     return searchResults.results || [];
 })
 

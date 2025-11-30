@@ -27,8 +27,8 @@ export default function SearchBar() {
     };
 
     const handleBlur = () => {
-        setShouldShowSearch(false);
-    };
+ // Small delay allows clicking on search results before hiding
++        setTimeout(() => setShouldShowSearch(false), 150);    };
 
     const handleSearchClick = () => {
         setShouldShowSearch(true);
